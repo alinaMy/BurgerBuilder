@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Aux from './../../hoc/Aux';
 import Burger from './../../components/Burger/Burger';
 import BuildControls from './../../components/Burger/BuildControls/BuildControls';
@@ -10,7 +10,7 @@ const INGREDIENTS_PRICE = {
     bacon: 0.8
 };
 
-class BurgerBuilder extends Component{
+class BurgerBuilder extends Component {
     state = {
         ingredients: {
             salad: 0,
@@ -27,7 +27,7 @@ class BurgerBuilder extends Component{
         const updatedIngredients = {
             ...this.state.ingredients
         };
-        updatedIngredients[type] = updatedCount; 
+        updatedIngredients[type] = updatedCount;
         const priceAddition = INGREDIENTS_PRICE[type];
         const oldPrice = this.state.totalPrice;
         const newPrice = oldPrice + priceAddition;
@@ -39,14 +39,14 @@ class BurgerBuilder extends Component{
 
     removeIngredientHandler = (type) => {
         const oldCount = this.state.ingredients[type];
-        if(oldCount <= 0){
+        if (oldCount <= 0) {
             return;
         }
         const updatedCount = oldCount - 1;
         const updatedIngredients = {
             ...this.state.ingredients
         };
-        updatedIngredients[type] = updatedCount; 
+        updatedIngredients[type] = updatedCount;
         const priceDeduction = INGREDIENTS_PRICE[type];
         const oldPrice = this.state.totalPrice;
         const newPrice = oldPrice - priceDeduction;
@@ -56,13 +56,21 @@ class BurgerBuilder extends Component{
         })
     }
 
-    render(){
-        return(
+    render() {
+        const disabledInfo = {
+            ...this.state.ingredients
+        }
+        for (let key in disabledInfo) {
+            disabledInfo[key] = disabledInfo[key] <= 0
+        }
+
+        return (
             <Aux>
-                <Burger ingredients = {this.state.ingredients}/>
+                <Burger ingredients={this.state.ingredients} />
                 <BuildControls
-                    ingredientAdded = {this.addIngredientHandler}
-                    ingredientRemoved = {this.removeIngredientHandler}/>
+                    ingredientAdded={this.addIngredientHandler}
+                    ingredientRemoved={this.removeIngredientHandler}
+                    disabled = {disabledInfo} />
             </Aux>
         );
     }
